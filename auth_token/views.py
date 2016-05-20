@@ -1,4 +1,3 @@
-# -*- coding:utf-8 -*-
 import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.views import login
@@ -7,8 +6,6 @@ from django.contrib.auth.models import User
 # Create your views here.
 from django.template.context_processors import csrf
 from tokenapi.views import token_new
-from django.db import IntegrityError
-
 from tokenapi.decorators import token_required
 # @token_required
 def loginview(request):
@@ -22,80 +19,31 @@ def loginview(request):
 def auth(request):
     result =  token_new(request)
     return result
-
-#注册
 def signup(request):
     data={}
     if request.method == "POST":
         username = request.POST.get('username',None)
         password = request.POST.get('password',None)
         if not (username and password):
-            # print request.body
+            print request.body
             request_data= json.loads(request.body)
-            username =  request_data["username"]
-            password =  request_data["password"]
-            email =request_data['email']
-            if username and password and email:
-                try:
-                    user = User.objects.get_by_natural_key(username)
-                except User.DoesNotExist:
-                    user = User.objects.create_user(username,email,password=password)
-                    if user.is_active:
-                        return HttpResponse("success")
-                    else:
-
-                        return HttpResponse("fail")
-                else:
-                    return HttpResponse("User already exists")
-
-
+            print request_data["username"]
+            print request_data["password"]
+            print request_data
+            return HttpResponse(request.body,content_type="application/json")
             # print request_data
-            # return HttpResponse(request.body,content_type="application/json")
-            # print request_data
-        # print username,password
-        # data['username']=username
-        # data['password']=password
-        # return HttpResponse(json.dumps(data),content_type="application/json")
+        print username,password
+        data['username']=username
+        data['password']=password
+        return HttpResponse(json.dumps(data),content_type="application/json")
+    if request.method == "GET":
+        print request.read()
+        return HttpResponse(json.dumps({"name":"yinzishao"}),content_type="application/json")
 
     return HttpResponse("No post")
 
-def test(requset):
-    username="yzs"
-    password="pwd"
-    # User.objects.
-    if username:
-        try:
-            user = User.objects.get_by_natural_key(username)
-        except User.DoesNotExist:
-            user = User.objects.create_user(username,"yz",password=password)
-            if user.is_active:
-                return HttpResponse("success")
-            else:
 
-                return HttpResponse("fail")
 
-        else:
-            return HttpResponse("User already exists")
-#
-    # try:
-    #     pass
-    # except IntegrityError:
-    #     return HttpResponse("Fail")
-    # else:
-    #     if user:
-    #         return HttpResponse("succeed")
-    #     else:
-    #         return HttpResponse("fail")
-
-def createUser(**kwargs):
-    username = kwargs['username']
-    password = kwargs['password']
-    email = kwargs['email']
-    try:
-        user = User.objects.create_user(username,email,password)
-    except IntegrityError:
-        HttpResponse("Fail")
-    # if user.
 
 
 
