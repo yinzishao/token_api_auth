@@ -43,7 +43,8 @@ INSTALLED_APPS = (
 
 AUTHENTICATION_BACKENDS=(
     'django.contrib.auth.backends.ModelBackend',
-    'tokenapi.backends.TokenBackend',
+    # 'tokenapi.backends.TokenBackend',
+    'auth_token.backends.TokenCacheBakcend'
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
