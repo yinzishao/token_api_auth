@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
+from base64 import b64decode
 import json
 from django.contrib.auth import authenticate
 from django.contrib.auth.views import login
 from django.shortcuts import render, render_to_response,HttpResponse, redirect
 from django.contrib.auth.models import User
 from django.template.context_processors import csrf
+from django.views.decorators.csrf import csrf_exempt
 from tokenapi.views import token_new
 from django.db import IntegrityError
 from tokenapi.decorators import token_required
@@ -16,7 +18,7 @@ def loginview(request):
     # c = {"yin":"yin"}
     # c.update(csrf(request))
     basic_auth = request.META.get('HTTP_AUTHORIZATION')
-    print basic_auth
+    # print basic_auth
     return render(request,'login.html')
     # return render_to_response('login.html', c,)
 
@@ -91,14 +93,44 @@ def login_from_pwd(request):
                 return HttpResponse(json.dumps(data),content_type="application/json")
             else:
                 return HttpResponse("Fail")
+
 from decorators import token_cache_required
+
 @token_cache_required
+# @csrf_exempt
 def test(request):
-    data={
-        "token": "1b46US:_uw-1cM6p3M8H10r7SF3DR6EQCk",
-        "userpk": "FgsrjCxMETo6hgMNoeR8Tufa1-o",
-    }
-    return check_token_in_cache(data)
+    # basic_auth = request.META.get('HTTP_AUTHORIZATION')
+    # userpk = request.POST.get('userpk', request.GET.get('userpk'))
+    # token = request.POST.get('token', request.GET.get('token'))
+    # print userpk,token
+    # if not (userpk and token) and basic_auth:
+    #         auth_method, auth_string = basic_auth.split(' ', 1)
+    #
+    #         if auth_method.lower() == 'basic':
+    #             auth_string = b64decode(auth_string.strip())
+    #             userpk, token = auth_string.decode().split(':', 1)
+    # if not (userpk and token):
+    #     # print request.body
+    #     request_data= json.loads(request.body)
+    #     userpk = request_data['userpk']
+    #     token = request_data['token']
+    # print userpk,token
+    # us = None
+    # pw = None
+    # print request.method
+    # if request.method == 'POST':
+    #     print "POST"
+    #     # print request.META
+    #     print request.POST
+    #     us = request.POST.get('userpk')
+    #     pw = request.POST.get('token')
+    # print us,pw
+    return HttpResponse("token login succeed")
+    # data={
+    #     "token": "1b46US:_uw-1cM6p3M8H10r7SF3DR6EQCk",
+    #     "userpk": "FgsrjCxMETo6hgMNoeR8Tufa1-o",
+    # }
+    # return check_token_in_cache(data)
 
     #
     # """

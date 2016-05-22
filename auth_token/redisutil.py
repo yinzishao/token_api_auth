@@ -18,6 +18,7 @@ def insert_token(data):
 
 #根据token返回userpk
 def get_userpk(token):
+    # print token,type(token)
     return r.get(token)
 
 #定时清理set（过期时间）
@@ -28,7 +29,9 @@ def clear_token():
 #1成功
 def delete_token(token):
     return r.delete(token)
-# get_userpk("sd")
+
+token = u"1b46US:_uw-1cM6p3M8H10r7SF3DR6EQCk"
+# print get_userpk(token)
 # print delete_token("1b45lx:L6pYuXNvwVY3nfo14AkvYsJv-Hk")
-sty = "17:"+"FgsrjCxMETo6hgMNoeR8Tufa1-o"
-print "17:FgsrjCxMETo6hgMNoeR8Tufa1-o"  ==sty
+# sty = "17:"+"FgsrjCxMETo6hgMNoeR8Tufa1-o"
+# print "17:FgsrjCxMETo6hgMNoeR8Tufa1-o"  ==sty

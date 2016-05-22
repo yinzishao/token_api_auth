@@ -35,13 +35,14 @@ def check_token_in_cache(data):
     max_age= 60*60*24*10
     # time_signer.unsign(token)
     userpk_origin = get_userpk(token)
+    # print userpk_origin
     if userpk_origin:
         user_str = "userpk"+"-"+str(userpk_origin)
         value = user_str+":"+token
         try:
             time_signer.unsign(value,max_age=max_age)
         except Exception,e:
-            print e.message
+            # print e.message
             delete_token(token)
             return None,HttpResponse("expired please login in again")
         else:
@@ -51,7 +52,7 @@ def check_token_in_cache(data):
             # print userpk_sige_str,type(userpk_sige_str),id(userpk_sige_str)
             if userpk_str ==userpk_sige_str:
                 #更新token时间?
-                user = User.objects.get(userpk=userpk_origin)
+                user = User.objects.get(pk=userpk_origin)
                 return user,HttpResponse("succeed")
             else:
                 return None,HttpResponse("Login in Fail PK ")
